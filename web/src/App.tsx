@@ -6,7 +6,6 @@ export default function App() {
     <Container sx={{
       display: "flex",
       flexDirection: "column",
-      // justifyContent: "center",
       alignItems: "center",
       minHeight: "100vh",
       gap: "20px",

@@ -24,7 +24,7 @@ export default function TransactionsTable({transactions, page, pageSize, totalTr
 
     return (
         <>
-        <TableContainer component={Paper} sx={{height: "800px"}}>
+        <TableContainer component={Paper} sx={{height: "60vh"}}>
             <Table stickyHeader sx={{ minWidth: "500px", tableLayout: "fixed" }}>
                 <TableHead>
                     <TableRow>
@@ -41,7 +41,7 @@ export default function TransactionsTable({transactions, page, pageSize, totalTr
                             sx={{height: "110px"}}
                         >
                             <TableCell>{transaction.date}</TableCell>
-                            <TableCell>£{transaction.spend.toFixed(2)}</TableCell>
+                            <TableCell>{new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(transaction.spend)}</TableCell>
                             <TableCell>{transaction.providerName}</TableCell>
                             <TableCell>
                                 {transaction.providerLogo && (

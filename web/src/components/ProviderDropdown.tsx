@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import {FormControl, InputLabel, Select, MenuItem} from "@mui/material";
 import {ProvidersResponse} from "../types/providerTypes.ts";
 
@@ -10,7 +10,7 @@ interface ProviderDropdownProps {
     defaultValue: string
 }
 
-export default function ProviderDropdown({ providers, selectedProvider, setSelectedProvider, setPage, defaultValue }: ProviderDropdownProps) {
+const ProviderDropdown = memo(function ProviderDropdown({ providers, selectedProvider, setSelectedProvider, setPage, defaultValue }: ProviderDropdownProps) {
 
     return (
         <FormControl sx={{ minWidth: 200 }}>
@@ -33,4 +33,6 @@ export default function ProviderDropdown({ providers, selectedProvider, setSelec
             </Select>
         </FormControl>
     );
-}
+});
+
+export default ProviderDropdown;

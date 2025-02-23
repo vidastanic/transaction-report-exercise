@@ -43,8 +43,11 @@ export default function TransactionsController() {
 
     useEffect(() => {
         fetchTransactionsLabelledWithProviders();
-        fetchProviders()
     }, [page, pageSize, selectedProvider]);
+
+    useEffect(() => {
+        fetchProviders();
+    }, [selectedProvider]);
 
     return (
         <>
@@ -52,8 +55,9 @@ export default function TransactionsController() {
             <Stack direction="row" spacing={2} alignItems="center">
                 <ProviderDropdown providers={providers} selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} setPage={setPage} defaultValue={defaultProviderDropdownValue} />
                 <Paper elevation={3} square={false} sx={{padding: "8px"}}>
-                    <Typography variant="button" sx={{display: "block"}}>Total Spend: £{totalSpend}</Typography>
-                    <Typography variant="button">Average Spend: £{averageSpend}</Typography>
+                    <Typography variant="h6" color="primary" sx={{display: "block"}}>Expenditure Summary</Typography>
+                    <Typography variant="button" sx={{display: "block"}}>Total Spend: {totalSpend !== null ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(totalSpend) : ""}</Typography>
+                    <Typography variant="button">Average Spend: {averageSpend !== null ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(averageSpend) : ""}</Typography>
                 </Paper>
             </Stack>
             <TransactionsTable transactions={transactions} page={page} pageSize={pageSize} totalTransactionCount={totalTransactionCount} setPage={setPage} setPageSize={setPageSize} />

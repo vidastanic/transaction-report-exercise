@@ -10,11 +10,13 @@ const unknownProviderLogo = "";
 export const transactionsWithProviders = transactions.map((transaction) => {
     let providerName = unknownProviderName;
     let providerLogo = unknownProviderLogo;
+    let providerTransactionSearchQuery = "";
 
     for (const provider of providers) {
         if (transaction.description.includes(provider.transactionSearchQuery)) {
             providerName = provider.name;
             providerLogo = provider.logo;
+            providerTransactionSearchQuery = provider.transactionSearchQuery;
             break;
         }
     }
@@ -22,11 +24,32 @@ export const transactionsWithProviders = transactions.map((transaction) => {
     return {
         id: transaction.id,
         date: transaction.dates.value,
-        spend: Number(transaction.amount.value),
+        spend: transaction.types.type === "DEBIT" ? Number(transaction.amount.value): -Number(transaction.amount.value),
         providerName: providerName,
-        providerLogo: providerLogo
+        providerLogo: providerLogo,
+        providerTransactionSearchQuery: providerTransactionSearchQuery
     }
 });
+
+const refreshTransactionsWithProviders = (providerName: string, isBeingAdded: boolean, providerTransactionSearchQuery: string, providerLogo?: string) => {
+    if (isBeingAdded) {
+        transactionsWithProviders.forEach((transaction) => {
+            if (transaction.providerName === unknownProviderName && transaction.providerTransactionSearchQuery.includes(providerName)) {
+                transaction.providerName = providerName;
+                transaction.providerLogo = providerLogo ?? "";
+                transaction.providerTransactionSearchQuery = providerTransactionSearchQuery;
+            }
+        });
+    } else {
+        transactionsWithProviders.forEach((transaction) => {
+            if (transaction.providerTransactionSearchQuery.includes(providerName)) {
+                transaction.providerName = unknownProviderName;
+                transaction.providerLogo = unknownProviderLogo;
+                transaction.providerTransactionSearchQuery = "";
+            }
+        })
+    }
+}
 
 router.get("/", (_req: Request, res: Response) => {
     const providersWithoutSearchQuery = providers.map((provider) => {
@@ -42,7 +65,7 @@ router.get("/", (_req: Request, res: Response) => {
 
 router.post("/add", (req: Request<{}, {}, {name: string, logo?: string, transactionSearchQuery: string}>, res: Response) => {
     if (providers.some((provider) => provider.name === req.body.name)) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: "Provider name already exists"
         })
@@ -53,6 +76,8 @@ router.post("/add", (req: Request<{}, {}, {name: string, logo?: string, transact
         ...req.body,
     }
     providers.push(newProvider);
+
+    refreshTransactionsWithProviders(req.body.name, true, req.body.transactionSearchQuery, req.body.logo)
 
     res.status(201).json({
         success: true,
@@ -74,6 +99,8 @@ router.delete("/delete/:name", (req: Request, res: Response) => {
     }
 
     const deletedProvider = providers.splice(index, 1)[0];
+
+    refreshTransactionsWithProviders(req.body.name, false, req.body.transactionSearchQuery, req.body.logo)
 
     res.status(200).json({
         success: true,
