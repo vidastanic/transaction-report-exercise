@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Bulb Energy",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/Bulb.png",
+    "transactionSearchQuery": "bulb energy"
+  },
+  {
+    "name": "OVO Energy",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/OVO.png",
+    "transactionSearchQuery": "ovo"
+  },
+  {
+    "name": "Octopus Energy",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/OctopusEnergy.png",
+    "transactionSearchQuery": "octopus energy"
+  },
+  {
+    "name": "Shell Energy",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/ShellEnergy.png",
+    "transactionSearchQuery": "shell"
+  },
+  {
+    "name": "British Gas",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/BritishGas.png",
+    "transactionSearchQuery": "british gas"
+  },
+  {
+    "name": "E On",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/Eon.png",
+    "transactionSearchQuery": "e.on energy"
+  },
+  {
+    "name": "Scottish Power",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/ScottishPower.png",
+    "transactionSearchQuery": "scottish power"
+  },
+  {
+    "name": "EDF",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/EDF.png",
+    "transactionSearchQuery": "edf"
+  },
+  {
+    "name": "Southern Electric",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/SSE.png",
+    "transactionSearchQuery": "southern elec"
+  },
+  {
+    "name": "Direct Line",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/DirectLine.png",
+    "transactionSearchQuery": "direct line"
+  },
+  {
+    "name": "Virgin Media",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/VirginMedia.png",
+    "transactionSearchQuery": "virgin media"
+  },
+  {
+    "name": "Sheila's Wheels",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/SheilasWheels.png",
+    "transactionSearchQuery": "shelias"
+  },
+  {
+    "name": "giffgaff",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/Giffgaff.png",
+    "transactionSearchQuery": "gifgaff"
+  },
+  {
+    "name": "Halifax",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/Halifax.png",
+    "transactionSearchQuery": "halifax"
+  },
+  {
+    "name": "Nationwide",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/Nationwide.png",
+    "transactionSearchQuery": "nationwide"
+  },
+  {
+    "name": "O2",
+    "logo": "https://nous-provider-images.s3.eu-west-2.amazonaws.com/o2.png",
+    "transactionSearchQuery": "o2"
+  }
+]
