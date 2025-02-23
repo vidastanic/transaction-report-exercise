@@ -56,8 +56,8 @@ export default function TransactionsController() {
                 <ProviderDropdown providers={providers} selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} setPage={setPage} defaultValue={defaultProviderDropdownValue} />
                 <Paper elevation={3} square={false} sx={{padding: "8px"}}>
                     <Typography variant="h6" color="primary" sx={{display: "block"}}>Expenditure Summary</Typography>
-                    <Typography variant="button" sx={{display: "block"}}>Total Spend: {totalSpend !== null ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(totalSpend) : ""}</Typography>
-                    <Typography variant="button">Average Spend: {averageSpend !== null ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(averageSpend) : ""}</Typography>
+                    <Typography variant="button" sx={{display: "block"}}>Total Net Spend: {totalSpend !== null ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(totalSpend) : ""}</Typography>
+                    <Typography variant="button">Average Net Spend: {averageSpend !== null ? new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(averageSpend) : ""}</Typography>
                 </Paper>
             </Stack>
             <TransactionsTable transactions={transactions} page={page} pageSize={pageSize} totalTransactionCount={totalTransactionCount} setPage={setPage} setPageSize={setPageSize} />
