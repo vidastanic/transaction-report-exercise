@@ -1,51 +1,42 @@
-import { Router, Request, Response } from "express";
-import { transactionsWithProviders } from "./providers";
+import { Router } from 'express';
+import { ReportStore, summarize } from '../report-store';
 
-const router = Router();
+function integer(value: unknown): number | null {
+  if (typeof value !== 'string' || !/^\d+$/.test(value)) return null;
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) ? parsed : null;
+}
 
-router.get("/", (req: Request<{}, {}, {}, {provider?: string, sortBy?: string, order?: string, page: string, pageSize: string}>, res: Response) => {
-    const { provider, sortBy, order, page, pageSize } = req.query;
-    const pageNum = parseInt(page);
-    const pageSizeNum = parseInt(pageSize);
-
-    let filteredTransactions = [...transactionsWithProviders];
-
-    if (provider) {
-        filteredTransactions = filteredTransactions.filter((transaction) => transaction.providerName === provider)
+export function createTransactionRouter(store: ReportStore) {
+  const router = Router();
+  router.get('/', (req, res) => {
+    const { provider, sortBy, order } = req.query;
+    const page = integer(req.query.page);
+    const pageSize = integer(req.query.pageSize);
+    if (page === null || pageSize === null || pageSize < 1 || pageSize > 100 ||
+        !Number.isSafeInteger(page * pageSize) ||
+        (provider !== undefined && typeof provider !== 'string') ||
+        (sortBy !== undefined && !['date', 'spend', 'name'].includes(String(sortBy))) ||
+        (sortBy !== undefined && typeof sortBy !== 'string') ||
+        (order !== undefined && (typeof order !== 'string' || !['asc', 'desc'].includes(order)))) {
+      res.status(400).json({ success: false, message: 'Use a non-negative page, pageSize 1-100, and valid filter/sort parameters.' });
+      return;
     }
-
+    let transactions = store.getTransactions();
+    if (provider) transactions = transactions.filter(item => item.providerName === provider);
     if (sortBy) {
-        filteredTransactions.sort((a, b) => {
-            if (sortBy === "date") {
-                return new Date(a.date).getTime() - new Date(b.date).getTime();
-            } else if (sortBy === "spend") {
-                return a.spend - b.spend;
-            } else if (sortBy === "name") {
-                return a.providerName.localeCompare(b.providerName);
-            }
-            return 0;
-        });
-
-        if (order === "desc") {
-            filteredTransactions.reverse();
-        }
+      transactions.sort((a, b) => {
+        if (sortBy === 'date') return new Date(a.date).getTime() - new Date(b.date).getTime();
+        if (sortBy === 'spend') return a.spend - b.spend;
+        return a.providerName.localeCompare(b.providerName);
+      });
+      if (order === 'desc') transactions.reverse();
     }
-
-    const totalTransactionCount = filteredTransactions.length;
-
-    const totalSpend = Math.round(filteredTransactions.reduce((total, transaction) => total + transaction.spend, 0) * 100) / 100;
-
-    const averageSpend = Math.round((totalSpend / totalTransactionCount) * 100) / 100;
-
-    filteredTransactions = filteredTransactions.slice(pageSizeNum * pageNum, pageSizeNum * (pageNum + 1));
-
-    res.status(200).json({
-        success: true,
-        transactions: filteredTransactions,
-        totalSpend,
-        averageSpend,
-        totalTransactionCount
+    res.json({
+      success: true,
+      ...summarize(transactions),
+      transactions: transactions.slice(page * pageSize, (page + 1) * pageSize),
     });
-});
-
-export default router;
+  });
+  return router;
+}

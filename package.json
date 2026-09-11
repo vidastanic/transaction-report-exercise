@@ -7,8 +7,9 @@
     "start": "ts-node src/index.ts",
     "dev:server": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
     "build": "tsc",
-    "serve": "node dist/index.js",
-    "dev": "concurrently \"yarn dev:server\" \"cd web && yarn dev\""
+    "serve": "node dist/src/index.js",
+    "dev": "concurrently \"yarn dev:server\" \"cd web && yarn dev\"",
+    "test": "node --require ts-node/register --test tests/*.test.cjs"
   },
   "author": "",
   "license": "ISC",

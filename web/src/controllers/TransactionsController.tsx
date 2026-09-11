@@ -19,8 +19,9 @@ export default function TransactionsController() {
 
     const fetchTransactionsLabelledWithProviders = async () => {
         try {
-            const provider = selectedProvider !== defaultProviderDropdownValue ?  `&provider=${selectedProvider}` : "";
+            const provider = selectedProvider !== defaultProviderDropdownValue ?  `&provider=${encodeURIComponent(selectedProvider)}` : "";
             const response = await fetch(`http://localhost:3001/transactions?page=${page}&pageSize=${pageSize}` + provider);
+            if (!response.ok) throw new Error("Could not load transactions");
             const responseObject = await response.json() as TransactionsResponse;
             setTransactions(responseObject.transactions);
             setTotalSpend(responseObject.totalSpend);
@@ -34,6 +35,7 @@ export default function TransactionsController() {
     const fetchProviders = async () => {
         try {
             const response = await fetch(`http://localhost:3001/providers`);
+            if (!response.ok) throw new Error("Could not load providers");
             const providersResponse = await response.json() as ProvidersResponse[];
             setProviders(providersResponse);
         } catch (error) {
